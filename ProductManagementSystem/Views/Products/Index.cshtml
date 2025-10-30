@@ -1,4 +1,4 @@
-@model IEnumerable<ProductManagementSystem.Models.Product>
+@* @model IEnumerable<ProductManagementSystem.Models.Product>
 
 @{
     ViewData["Title"] = "Danh sách sản phẩm";
@@ -11,6 +11,12 @@
         <a asp-action="Create" class="btn btn-success px-4 mt-2">
             ➕ Thêm sản phẩm mới
         </a>
+       <form asp-action="Index" method="get" class="text-center mb-3">
+    <input type="text" name="searchString" value="@ViewData["SearchString"]" 
+           class="form-control d-inline-block w-50" placeholder="Nhập tên sản phẩm..." />
+    <button type="submit" class="btn btn-primary ms-2">Tìm kiếm</button>
+</form>
+    </div>
     </div>
 
     <div class="table-responsive">
@@ -84,4 +90,79 @@
         text-transform: uppercase;
         letter-spacing: 1px;
     }
-</style>
+</style> *@
+@model IEnumerable<ProductManagementSystem.Models.Product>
+
+@{
+    ViewData["Title"] = "Danh sách sản phẩm";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4 text-primary fw-bold">📦 Danh sách sản phẩm</h1>
+
+    <!-- 🔍 Form tìm kiếm -->
+    <form asp-action="Index" method="get" class="d-flex justify-content-center mb-4">
+        <input type="text" name="searchString" value="@ViewData["SearchString"]" 
+               class="form-control w-50 shadow-sm rounded-pill px-3" 
+               placeholder="🔎 Nhập tên sản phẩm để tìm..." />
+        <button type="submit" class="btn btn-primary ms-3 rounded-pill px-4">
+            Tìm kiếm
+        </button>
+    </form>
+
+    <!-- ➕ Nút thêm mới -->
+    <div class="text-center mb-3">
+        <a asp-action="Create" class="btn btn-success rounded-pill px-4 shadow-sm">
+            + Thêm sản phẩm mới
+        </a>
+    </div>
+
+    <!-- 📋 Bảng danh sách -->
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle shadow-sm">
+            <thead class="table-primary text-center">
+                <tr class="align-middle">
+                    <th style="width: 30%;">Tên sản phẩm</th>
+                    <th style="width: 20%;">Giá</th>
+                    <th style="width: 20%;">Tồn kho</th>
+                    <th style="width: 30%;">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                @if (Model.Any())
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@item.Name</td>
+                            <td>@item.Price.ToString("C")</td>
+                            <td>@item.Stock</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id" 
+                                   class="btn btn-warning btn-sm rounded-pill me-1 px-3">
+                                    ✏️ Sửa
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.Id" 
+                                   class="btn btn-info btn-sm text-white rounded-pill me-1 px-3">
+                                    🔍 Chi tiết
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" 
+                                   class="btn btn-danger btn-sm rounded-pill px-3">
+                                    🗑️ Xóa
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-muted fst-italic py-4">
+                            Không có sản phẩm nào được tìm thấy.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

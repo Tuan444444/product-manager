@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProductManagementSystem.Models;
 using ProductManagementSystem.Services;
 
-using ProductManagementSystem.Services.Interfaces; // Dùng Interface
+using ProductManagementSystem.Services.Interfaces; 
 
 namespace ProductManagementSystem.Controllers
 {
@@ -10,20 +10,21 @@ namespace ProductManagementSystem.Controllers
     {
         private readonly IProductService _productService;
 
-        // Tiêm IProductService vào constructor 
+       
         public ProductsController(IProductService productService)
         {
             _productService = productService;
         }
 
-        // GET: /Products (Xem danh sách) 
-        public async Task<IActionResult> Index()
-        {
-            var products = await _productService.GetAllProductsAsync();
-            return View(products); // Trả về Views/Products/Index.cshtml
-        }
+       
+    public async Task<IActionResult> Index(string? searchString)
+{
+    var products = await _productService.GetAllProductsAsync(searchString);
+    ViewData["SearchString"] = searchString;
+    return View(products);
+}
 
-        // GET: /Products/Details/5 (Xem chi tiết)
+       
         public async Task<IActionResult> Details(int id)
         {
             var product = await _productService.GetProductByIdAsync(id);
@@ -31,13 +32,13 @@ namespace ProductManagementSystem.Controllers
             {
                 return NotFound();
             }
-            return View(product); // Trả về Views/Products/Details.cshtml
+            return View(product); 
         }
 
-        // GET: /Products/Create (Form thêm mới)
+        
         public IActionResult Create()
         {
-            return View(); // Trả về Views/Products/Create.cshtml
+            return View(); 
         }
 
         // POST: /Products/Create (Xử lý thêm mới)

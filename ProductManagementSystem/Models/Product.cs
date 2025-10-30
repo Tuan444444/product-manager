@@ -10,7 +10,7 @@ namespace ProductManagementSystem.Models
 
         [Required(ErrorMessage = "Tên sản phẩm là bắt buộc")] 
         [MinLength(3, ErrorMessage = "Tên sản phẩm phải có ít nhất 3 ký tự")] 
-        public string? Name { get; set; }
+        public required string Name { get; set; }
 
         [Required(ErrorMessage = "Giá là bắt buộc")]
         [Range(0.01, (double)decimal.MaxValue, ErrorMessage = "Giá phải lớn hơn 0")] 

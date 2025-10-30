@@ -14,9 +14,16 @@ namespace ProductManagementSystem.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Product>> GetAllAsync()
+        public async Task<IEnumerable<Product>> GetAllAsync(string? searchString)
         {
-            return await _context.Products.ToListAsync();
+            var query = _context.Products.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(p => p.Name.Contains(searchString));
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<Product?> GetByIdAsync(int id)
